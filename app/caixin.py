@@ -8,15 +8,11 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from .store import ConflictError, DomainError, Store, now_iso, parse_time, stable_id
+from .store import PROJECT_ROOT, ConflictError, DomainError, Store, now_iso, parse_time, stable_id
 
 
-DEFAULT_CAIXIN_ROOT = Path(
-    r"data/sources/caixin"
-)
-DEFAULT_CAIXIN_RAW_ROOT = Path(
-    r"data/sources/caixin-raw"
-)
+DEFAULT_CAIXIN_ROOT = PROJECT_ROOT / "data" / "sources" / "caixin"
+DEFAULT_CAIXIN_RAW_ROOT = PROJECT_ROOT / "data" / "sources" / "caixin-raw"
 ADAPTER_VERSION = "caixin-evidence-v1"
 
 
@@ -432,8 +428,9 @@ def sync_caixin(
     from .settings import settings
     if not settings(store)["channels"]["caixin_enabled"]:
         raise DomainError("财新接入已暂停；仅在用户明确保留该研究渠道后同步，已有资料仍可查看")
-    source_root = Path(root or DEFAULT_CAIXIN_ROOT).resolve()
-    source_raw_root = Path(raw_root or DEFAULT_CAIXIN_RAW_ROOT).resolve()
+    saved = store.read("source_status/caixin.json", {}) or {}
+    source_root = Path(root or saved.get("root") or DEFAULT_CAIXIN_ROOT).resolve()
+    source_raw_root = Path(raw_root or saved.get("raw_root") or DEFAULT_CAIXIN_RAW_ROOT).resolve()
     if not source_root.is_dir():
         raise DomainError(f"财新清洗目录不存在：{source_root}")
     if not source_raw_root.is_dir():

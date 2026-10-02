@@ -95,6 +95,22 @@ def _write_projection(
     return target
 
 
+def test_default_sync_preserves_saved_private_archive_paths(tmp_path):
+    source = tmp_path / "private-archive"
+    raw = tmp_path / "private-originals"
+    _write_projection(source, raw)
+    store = Store(tmp_path / "data")
+    update_settings(store, {"channels": {"caixin_enabled": True}})
+    store.write("source_status/caixin.json", {"root": str(source), "raw_root": str(raw)})
+
+    result = sync_caixin(store, request_id="saved-private-paths")
+
+    assert result["status"]["root"] == str(source.resolve())
+    assert result["status"]["raw_root"] == str(raw.resolve())
+    assert result["ready"] == 1
+    assert len(list(raw.rglob("*.html"))) == 1
+
+
 def test_sync_freezes_versions_searches_full_text_and_is_idempotent(tmp_path):
     source = tmp_path / "source"
     raw = tmp_path / "raw"
