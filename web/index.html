@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1ea">
+  <title>A股决策工作台</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <div class="brand"><span class="brand-mark">A</span><div><strong>A股决策工作台</strong><small>证据 · 判断 · 复盘</small></div></div>
+      <nav class="nav-tabs" role="tablist" aria-label="工作台入口">
+        <button class="nav-tab active" data-tab="decision" role="tab" aria-selected="true"><span class="nav-icon">◒</span>当前决策</button>
+        <button class="nav-tab" data-tab="roles" role="tab" aria-selected="false"><span class="nav-icon">◈</span>角色与记忆</button>
+        <button class="nav-tab" data-tab="materials" role="tab" aria-selected="false"><span class="nav-icon">▤</span>资料与来源</button>
+        <button class="nav-tab" data-tab="ledger" role="tab" aria-selected="false"><span class="nav-icon">⌁</span>记录与复盘</button>
+      </nav>
+      <div class="sidebar-foot"><span class="status-dot"></span><span id="system-status">正在连接本地服务</span><small>研究由独立工作台运行</small></div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar"><div><p class="eyebrow" id="page-eyebrow">DECISION DESK / 01</p><h1 id="page-title">当前决策</h1></div><div class="top-actions"><span class="asof" id="asof-label">—</span><button class="icon-button" id="reload-state" title="重新加载状态" aria-label="重新加载状态">↻</button></div></header>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div id="loading" class="loading-panel"><span class="spinner"></span>正在读取本地状态…</div>
+      <section id="view-decision" class="view active" role="tabpanel"></section>
+      <section id="view-roles" class="view" role="tabpanel" hidden></section>
+      <section id="view-materials" class="view" role="tabpanel" hidden></section>
+      <section id="view-ledger" class="view" role="tabpanel" hidden></section>
+    </main>
+  </div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
